@@ -1,0 +1,34 @@
+{
+  "imports": [
+    "boxes"
+  ],
+  "components": {
+    "SimplyComp": {
+      "defaultProps": {},
+      "elements": {
+        "root": {
+          "type": {
+            "component": "Box",
+            "lib": "boxes"
+          },
+          "props": {
+            "children": [
+              "Text1"
+            ]
+          }
+        },
+        "Text1": {
+          "type": {
+            "lib": "boxes",
+            "component": "Text"
+          },
+          "props": {
+            "text": "A simple component"
+          }
+        }
+      },
+      "propTypes": {},
+      "rootElement": "root"
+    }
+  }
+}

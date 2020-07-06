@@ -1,0 +1,111 @@
+{
+  "imports": [
+    "boxes"
+  ],
+  "components": {
+    "Component1": {
+      "defaultProps": {},
+      "elements": {
+        "root": {
+          "type": {
+            "component": "Box",
+            "lib": "boxes"
+          },
+          "props": {
+            "children": [
+              "Box1"
+            ]
+          }
+        },
+        "Box1": {
+          "type": {
+            "lib": "boxes",
+            "component": "Box"
+          },
+          "props": {
+            "fill": {
+              "color": {
+                "r": 39,
+                "g": 0,
+                "b": 235,
+                "a": 1
+              }
+            }
+          }
+        }
+      },
+      "propTypes": {},
+      "rootElement": "root"
+    },
+    "Navbar": {
+      "defaultProps": {},
+      "elements": {
+        "root": {
+          "type": {
+            "component": "Box",
+            "lib": "boxes"
+          },
+          "props": {
+            "children": [
+              "Box1"
+            ]
+          }
+        },
+        "Box1": {
+          "type": {
+            "lib": "boxes",
+            "component": "Box"
+          },
+          "props": {
+            "fill": {
+              "color": {
+                "r": 47,
+                "g": 14,
+                "b": 215,
+                "a": 1
+              }
+            },
+            "children": [
+              "Text1"
+            ]
+          }
+        },
+        "Text1": {
+          "type": {
+            "lib": "boxes",
+            "component": "Text"
+          },
+          "props": {
+            "text": "Test"
+          }
+        }
+      },
+      "propTypes": {},
+      "rootElement": "root"
+    },
+    "Button": {
+      "defaultProps": {},
+      "elements": {
+        "root": {
+          "type": {
+            "component": "Box",
+            "lib": "boxes"
+          },
+          "props": {
+            "children": [],
+            "fill": {
+              "color": {
+                "r": 184,
+                "g": 203,
+                "b": 0,
+                "a": 1
+              }
+            }
+          }
+        }
+      },
+      "propTypes": {},
+      "rootElement": "root"
+    }
+  }
+}
