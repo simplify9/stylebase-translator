@@ -54,8 +54,10 @@ BlazorComponent::BlazorComponent(std::string tname,
 BlazorComponent::BlazorComponent(std::string name, nlohmann::json component):
     openingTag('<' + name + '>'), closingTag("<\\" + name + '>')
 {
-    if(!component["elements"]["root"]["props"]["children"].is_array()) return;
-    std::vector<std::string> children = component["elements"]["root"]["props"]["children"]
+    nlohmann::json elemRoot = component["elements"]["root"].is_null() ?
+                              component : component["elements"]["root"];
+    if(!elemRoot["props"]["children"].is_array()) return;
+    std::vector<std::string> children = elemRoot["props"]["children"]
                                         .get<std::vector<std::string>>();
     for(std::string child : children) {
         nlohmann::json childJson = component["elements"][child];
@@ -66,6 +68,7 @@ BlazorComponent::BlazorComponent(std::string name, nlohmann::json component):
             this->children.emplace_back(func(childJson));
         }
         else {
+            std::cout << "Child(" << child << ")" << childJson.dump() << std::endl;
             this->children.emplace_back(child, childJson);
         }
     }
