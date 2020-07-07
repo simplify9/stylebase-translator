@@ -13,7 +13,8 @@ const BlazorComponent::ComponentMap BlazorComponent::componentMap{
        std::vector<BlazorParameter> params(props.size());
        for (auto it = j.items().begin(); it != j.items().end(); ++it) {
        }
-       return BlazorComponent("Text", params, props["children"]);
+       //return BlazorComponent("Text", params, props["children"]);
+       return BlazorComponent("Text", j);
      }},
     {"Box",
      [](nlohmann::json j) -> BlazorComponent {
@@ -21,18 +22,24 @@ const BlazorComponent::ComponentMap BlazorComponent::componentMap{
        std::vector<BlazorParameter> params(props.size());
        for (auto it = j.items().begin(); it != j.items().end(); ++it) {
        }
-       return BlazorComponent("Box", params, props["children"]);
+       return BlazorComponent("Box", j);
+       //return BlazorComponent("Box", params, props["children"]);
      }},
 
 };
 
 BlazorComponent::BlazorComponent() {}
 
-void BlazorComponent::streamOutput(std::ostream* output){
-    *output << '\t' + this->openingTag + '\n';
-    for(BlazorComponent child : this->children)
-        child.streamOutput(output);
-    *output << '\t' + this->closingTag + '\n';
+void BlazorComponent::streamOutput(std::ostream* output, int indentCount){
+    for(int i = 0; i < indentCount; ++i)
+        std::cout << '\t';
+    *output << this->openingTag + '\n';
+    for(BlazorComponent child : this->children){
+        child.streamOutput(output, indentCount + 1);
+    }
+    for(int i = 0; i < indentCount; ++i)
+        std::cout << '\t';
+    *output << this->closingTag + '\n';
 }
 
 BlazorComponent::BlazorComponent(std::string tname,
@@ -47,18 +54,19 @@ BlazorComponent::BlazorComponent(std::string tname,
 BlazorComponent::BlazorComponent(std::string name, nlohmann::json component):
     openingTag('<' + name + '>'), closingTag("<\\" + name + '>')
 {
-    nlohmann::json childrenJson = component["elements"]["props"]["children"];
-    this->children.reserve(childrenJson.size());
-    for(auto child = childrenJson.items().begin(); child != childrenJson.items().end(); ++child){
-        nlohmann::json childVal = component["elements"][child.key()];
-        std::string childType = (std::string)childVal["type"]["component"];
+    if(!component["elements"]["root"]["props"]["children"].is_array()) return;
+    std::vector<std::string> children = component["elements"]["root"]["props"]["children"]
+                                        .get<std::vector<std::string>>();
+    for(std::string child : children) {
+        nlohmann::json childJson = component["elements"][child];
+        std::string childType = childJson["type"]["component"].get<std::string>();
         if(BlazorComponent::componentMap.count(childType.c_str()) == 1){
             std::function<BlazorComponent(nlohmann::json)> func = 
-                BlazorComponent::componentMap.find(child.key().c_str())->second;
-            this->children.emplace_back(func(child.value()));
+                BlazorComponent::componentMap.find(child.c_str())->second;
+            this->children.emplace_back(func(childJson));
         }
         else {
-            this->children.emplace_back(child.key(), childVal);
+            this->children.emplace_back(child, childJson);
         }
     }
 }

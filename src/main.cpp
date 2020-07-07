@@ -34,7 +34,6 @@ int main(int argc, char** argv){
         blazorComponents.emplace_back(it.key(), it.value());
     }
 
-
     std::cout << "Blazor Result:\n" << std::flush;
 
     for(BlazorComponent comp : blazorComponents){
