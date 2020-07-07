@@ -45,7 +45,7 @@ void BlazorComponent::streamOutput(std::ostream* output, int indentCount){
 BlazorComponent::BlazorComponent(std::string tname,
      std::vector<BlazorParameter> params,
      nlohmann::json children):
-     openingTag('<' + tname + '>'), closingTag("<\\" + tname + '>'),
+     openingTag('<' + tname + '>'), closingTag("</" + tname + '>'),
      parameters(params), children(children.size()) {
   for (auto child = children.items().begin(); child != children.items().end(); ++child)
     this->children.emplace_back(child.key(), child.value());
