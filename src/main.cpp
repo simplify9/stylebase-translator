@@ -29,7 +29,6 @@ int main(int argc, char **argv) {
   json parsedBody = getJsonFromFile(sbJsonFilepath);
   json components = parsedBody["components"];
 
-  std::vector<BlazorDocument> blazorDocuments;
   std::vector<BlazorComponent> blazorComponents;
 
   for (json::iterator it = components.begin(); it != components.end(); ++it) {
@@ -41,10 +40,10 @@ int main(int argc, char **argv) {
       );
   }
 
-  blazorDocuments.reserve(blazorComponents.size());
+  BlazorProject::documents.reserve(blazorComponents.size());
 
   for (BlazorComponent comp : blazorComponents) {
-    blazorDocuments.emplace_back(comp.getName().c_str(), comp);
+    BlazorProject::documents.emplace_back(comp.getName().c_str(), comp);
   }
 
   std::cout << "Blazor Result:\n" << std::flush;
