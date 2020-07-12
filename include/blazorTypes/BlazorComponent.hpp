@@ -5,17 +5,27 @@
 #include <unordered_map>
 #include <vector>
 
+class BlazorDocument;
 
 class BlazorComponent {
     public:
-        typedef std::unordered_map<const char*, std::function<BlazorComponent(nlohmann::json)>> ComponentMap;
-        const static ComponentMap componentMap;
+        typedef BlazorComponent (*componentMaker)(nlohmann::json);
+        typedef std::unordered_map<std::string, componentMaker> ComponentMap;
+        static ComponentMap componentMap;
+
+        void setName(const char* name);
+        inline std::string getName() {return this->name;};
 
         BlazorComponent();
         BlazorComponent(std::string name, nlohmann::json json);
         BlazorComponent(std::string tagName, std::vector<BlazorParameter> params, nlohmann::json childrenJson = NULL);
+
         void streamOutput(std::ostream* output, int indentCount = 1);
+
+        constexpr inline int getId() {return this->id;};
     private:
+        std::string name;
+        int id;
         std::string openingTag;
         std::string closingTag;
         std::vector<BlazorComponent> children;

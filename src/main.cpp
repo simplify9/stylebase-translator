@@ -1,48 +1,57 @@
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <string>
-#include <nlohmann/json.hpp>
 #include <blazorTypes/BlazorComponent.hpp>
-
+#include <blazorTypes/BlazorDocument.hpp>
+#include <blazorTypes/BlazorProject.hpp>
+#include <fstream>
+#include <iostream>
+#include <nlohmann/json.hpp>
+#include <string>
+#include <vector>
 
 using json = nlohmann::json;
 
-nlohmann::json getJsonFromFile(const char* filepath){
-    std::string line;
-    std::ifstream file(filepath);
-    nlohmann::json jsonTemplate;
-    file >> jsonTemplate;
-    return jsonTemplate;
+nlohmann::json getJsonFromFile(const char *filepath) {
+  std::string line;
+  std::ifstream file(filepath);
+  nlohmann::json jsonTemplate;
+  file >> jsonTemplate;
+  return jsonTemplate;
 }
 
+int main(int argc, char **argv) {
+  if (argc < 2) {
+    std::cout << "No input found." << std::endl;
+    return -1;
+  }
 
-int main(int argc, char** argv){
-    if(argc < 2){
-        std::cout << "No input found." << std::endl;
-        return -1;
-    }
+  std::cout << "Reading json template...\n" << std::flush;
 
-    std::cout << "Reading json template...\n" << std::flush;
+  const char *sbJsonFilepath = argv[1];
+  json parsedBody = getJsonFromFile(sbJsonFilepath);
+  json components = parsedBody["components"];
 
-    const char* sbJsonFilepath = argv[1];
-    json parsedBody = getJsonFromFile(sbJsonFilepath);
-    json components = parsedBody["components"];
-    std::vector<BlazorComponent> blazorComponents;
+  std::vector<BlazorDocument> blazorDocuments;
+  std::vector<BlazorComponent> blazorComponents;
 
-    for(json::iterator it = components.begin(); it != components.end(); ++it){
-        blazorComponents.emplace_back(it.key(), it.value());
-    }
+  for (json::iterator it = components.begin(); it != components.end(); ++it) {
+    BlazorComponent tmp(it.key(), it.value());
+    blazorComponents.emplace_back(std::move(tmp));
+    if (BlazorProject::componentIds.find(tmp.getId()) != BlazorProject::componentIds.end())
+      BlazorProject::componentIds.insert(
+          {tmp.getId(), &blazorComponents[blazorComponents.size()]}
+      );
+  }
 
-    std::cout << "Blazor Result:\n" << std::flush;
+  blazorDocuments.reserve(blazorComponents.size());
 
-    for(BlazorComponent comp : blazorComponents){
-        comp.streamOutput(&std::cout);
-    }
+  for (BlazorComponent comp : blazorComponents) {
+    blazorDocuments.emplace_back(comp.getName().c_str(), comp);
+  }
 
-    
+  std::cout << "Blazor Result:\n" << std::flush;
 
-    return 0;
+  for (BlazorComponent comp : blazorComponents) {
+    comp.streamOutput(&std::cout);
+  }
 
-    
+  return 0;
 }
