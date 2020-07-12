@@ -11,6 +11,8 @@ add_executable(
 				src/main.cpp
 				src/blazorTypes/BlazorComponent.cpp
 				src/blazorTypes/BlazorParameter.cpp
+				src/blazorTypes/BlazorDocument.cpp
+				src/blazorTypes/BlazorProject.cpp
 )
 
 
