@@ -1,4 +1,4 @@
-#include <blazorTypes/BlazorComponent.hpp>
+#include <blazor_types/blazor_component.hpp>
 #include <iostream>
 #include <cstdlib>
 #include <string>

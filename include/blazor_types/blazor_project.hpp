@@ -2,7 +2,8 @@
 #define BLAZORPROJECT
 
 #include <vector>
-#include <blazorTypes/BlazorComponent.hpp>
+#include "blazor_component.hpp"
+#include "blazor_document.hpp"
 
 class BlazorProject {
     public:

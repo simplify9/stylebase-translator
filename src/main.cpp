@@ -1,6 +1,6 @@
-#include <blazorTypes/BlazorComponent.hpp>
-#include <blazorTypes/BlazorDocument.hpp>
-#include <blazorTypes/BlazorProject.hpp>
+#include <blazor_types/blazor_component.hpp>
+#include <blazor_types/blazor_document.hpp>
+#include <blazor_types/blazor_project.hpp>
 #include <fstream>
 #include <iostream>
 #include <nlohmann/json.hpp>

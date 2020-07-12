@@ -1,7 +1,7 @@
 #ifndef BLAZORCOMPONENT
 #define BLAZORCOMPONENT
 #include <nlohmann/json.hpp>
-#include "BlazorParameter.hpp"
+#include "blazor_parameter.hpp"
 #include <unordered_map>
 #include <vector>
 

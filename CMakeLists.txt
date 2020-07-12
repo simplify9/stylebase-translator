@@ -9,10 +9,10 @@ add_subdirectory(deps/json)
 add_executable(
 				stylebaseTranslator 
 				src/main.cpp
-				src/blazorTypes/BlazorComponent.cpp
-				src/blazorTypes/BlazorParameter.cpp
-				src/blazorTypes/BlazorDocument.cpp
-				src/blazorTypes/BlazorProject.cpp
+				src/blazor_types/blazor_component.cpp
+				src/blazor_types/blazor_parameter.cpp
+				src/blazor_types/blazor_document.cpp
+				src/blazor_types/blazor_project.cpp
 )
 
 

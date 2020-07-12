@@ -1,7 +1,7 @@
 #ifndef BLAZORPARAMETER
 #define BLAZORPARAMETER
 
-#include "BlazorParameterTypes.hpp"
+#include "blazor_parameter_types.hpp"
 #include <string>
 
 class BlazorParameter {
