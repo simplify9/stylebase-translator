@@ -7,6 +7,7 @@
 class BlazorProject {
     public:
         static std::unordered_map<int, BlazorComponent*> componentIds;
+        static std::vector<BlazorDocument> documents;
         BlazorProject();
     private:
 };
