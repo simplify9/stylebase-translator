@@ -17,7 +17,7 @@ class BlazorComponent {
         inline std::string getName() {return this->name;};
 
         BlazorComponent();
-        BlazorComponent(std::string name, nlohmann::json json);
+        BlazorComponent(std::string name, nlohmann::json json, std::string elementName = "root");
         BlazorComponent(std::string tagName, std::vector<BlazorParameter> params, nlohmann::json childrenJson = NULL);
 
         void streamOutput(std::ostream* output, int indentCount = 1);
