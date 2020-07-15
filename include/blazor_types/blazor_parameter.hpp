@@ -7,6 +7,7 @@
 class BlazorParameter {
     public:
         BlazorParameter();
+        std::string getName();
     private:
         std::string paramName;
         std::string typeName;
