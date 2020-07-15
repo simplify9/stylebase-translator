@@ -61,6 +61,9 @@ BlazorComponent::BlazorComponent(std::string tname,
 BlazorComponent::BlazorComponent(std::string name, nlohmann::json component, std::string elementName):
     name(name), openingTag('<' + name + '>'), closingTag("<\\" + name + '>'), id(rand())
 {
+    //TODO:
+    // 1. Let component map return a component to borrow from
+    // 2. Construct the component as normal, but attach borrowed elements before emplacing
     nlohmann::json focusedElem = component["elements"][elementName];
     nlohmann::json* compProps = &focusedElem["props"];
     nlohmann::json* compTypeInfo = &focusedElem["type"];
@@ -75,33 +78,6 @@ BlazorComponent::BlazorComponent(std::string name, nlohmann::json component, std
     }
 
 }
-
-//TODO: Make the flow as follows:
-// 1. Add the component tag as a wrapper
-// 2. Add root element as its main child
-// 3. Add children to be within the component
-// BlazorComponent::BlazorComponent(std::string name, nlohmann::json component):
-//     openingTag('<' + name + '>'), closingTag("<\\" + name + '>'), id(rand())
-// {
-//     nlohmann::json elemRoot = component["elements"][name].is_null() ?
-//                               component["elements"]["root"] : component["elements"][name];
-//     if(!elemRoot["props"]["children"].is_array()) return;
-//     std::vector<std::string> children = elemRoot["props"]["children"]
-//                                         .get<std::vector<std::string>>();
-//
-//     for(std::string child : children) {
-//         nlohmann::json childJson = component["elements"][child];
-//         std::string childType = childJson["type"]["component"].get<std::string>();
-//         auto mapFind = BlazorComponent::componentMap.find(childType);
-//         if(mapFind != BlazorComponent::componentMap.end()){
-//             //TODO: check document for existing definitions of this elem
-//             //this->children.emplace_back(mapFind->second(component));
-//         }
-//         else {
-//             this->children.emplace_back(child, component);
-//         }
-//     }
-// }
 
 void BlazorComponent::setName(const char* name){
     this->name = name;
