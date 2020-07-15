@@ -5,7 +5,6 @@
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
-#include <vector>
 
 using json = nlohmann::json;
 
@@ -29,27 +28,20 @@ int main(int argc, char **argv) {
   json parsedBody = getJsonFromFile(sbJsonFilepath);
   json components = parsedBody["components"];
 
-  std::vector<BlazorComponent> blazorComponents;
-
   for (json::iterator it = components.begin(); it != components.end(); ++it) {
-    BlazorComponent tmp(it.key(), it.value());
-    blazorComponents.emplace_back(std::move(tmp));
-    if (BlazorProject::componentIds.find(tmp.getId()) != BlazorProject::componentIds.end())
-      BlazorProject::componentIds.insert(
-          {tmp.getId(), &blazorComponents[blazorComponents.size()]}
-      );
+    BlazorProject::components.emplace_back(it.key(), it.value());
+    BlazorComponent* comp = &BlazorProject::components[BlazorProject::components.size()];
+    if (BlazorProject::componentIds.find(comp->getId()) == BlazorProject::componentIds.end())
+      BlazorProject::componentIds.insert({comp->getId(), comp});
   }
 
-  BlazorProject::documents.reserve(blazorComponents.size());
-
-  for (BlazorComponent comp : blazorComponents) {
+  BlazorProject::documents.reserve(BlazorProject::components.size());
+  for (BlazorComponent comp : BlazorProject::components) {
     BlazorProject::documents.emplace_back(comp.getName().c_str(), comp);
   }
 
-  std::cout << "Blazor Result:\n" << std::flush;
-
-  for (BlazorComponent comp : blazorComponents) {
-    comp.streamOutput(&std::cout);
+  for(BlazorComponent comp : BlazorProject::components){
+      comp.streamOutput(&std::cout);
   }
 
   return 0;
