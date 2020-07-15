@@ -31,8 +31,8 @@ int main(int argc, char **argv) {
   for (json::iterator it = components.begin(); it != components.end(); ++it) {
     BlazorProject::components.emplace_back(it.key(), it.value());
     BlazorComponent* comp = &BlazorProject::components[BlazorProject::components.size()];
-    if (BlazorProject::componentIds.find(comp->getId()) == BlazorProject::componentIds.end())
-      BlazorProject::componentIds.insert({comp->getId(), comp});
+    if (BlazorProject::componentIds.find(comp->calculateIdentity()) == BlazorProject::componentIds.end())
+      BlazorProject::componentIds.insert({comp->calculateIdentity(), comp});
   }
 
   BlazorProject::documents.reserve(BlazorProject::components.size());
