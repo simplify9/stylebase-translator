@@ -62,6 +62,10 @@ BlazorComponent::BlazorComponent(std::string tname, Stylebase::TypeInfo typeInfo
             this->openingTag = '<' + typeInfo.component + '>'; 
             this->closingTag = "<\\" + typeInfo.component + '>';
         }
+        else {
+            this->openingTag = '<' + tname + '>'; 
+            this->closingTag = "<\\" + tname + '>';
+        }
     }
 
 BlazorComponent::BlazorComponent(std::string name, nlohmann::json component,
@@ -70,18 +74,18 @@ BlazorComponent::BlazorComponent(std::string name, nlohmann::json component,
       id(rand()), type("Wrapper") {
 
   nlohmann::json innerElems = component["elements"];
-  nlohmann::json rootElem = innerElems["root"];
+  nlohmann::json rootJson = innerElems["root"];
 
-  this->children.emplace_back("root", rootElem["type"].get<Stylebase::TypeInfo>());
-  BlazorComponent* rootComp = &this->children[children.size()];
+  BlazorComponent rootElem = BlazorComponent("root", rootJson["type"].get<Stylebase::TypeInfo>());
 
   for (auto it = innerElems.begin(); it != innerElems.end(); ++it) {
-    if (it.key() == "root") {
-      continue;
-    } else {
-        rootComp->children.emplace_back(it.key(), rootElem["type"].get<Stylebase::TypeInfo>());
+    if (it.key() == "root") continue;
+    else {
+        rootElem.children.emplace_back(it.key(), innerElems[it.key()]["type"].get<Stylebase::TypeInfo>());
     }
   }
+
+  this->children.push_back(rootElem);
 }
 
 void BlazorComponent::setName(const char *name) { this->name = name; }
