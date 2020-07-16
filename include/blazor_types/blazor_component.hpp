@@ -2,6 +2,7 @@
 #define BLAZORCOMPONENT
 #include <nlohmann/json.hpp>
 #include "blazor_parameter.hpp"
+#include "stylebase_structs/base_structs.hpp"
 #include <unordered_map>
 #include <vector>
 
@@ -9,8 +10,8 @@ class BlazorDocument;
 
 class BlazorComponent {
     public:
-        typedef BlazorComponent (*componentMaker)(nlohmann::json);
-        typedef std::unordered_map<std::string, componentMaker> ComponentMap;
+        typedef BlazorComponent (*ComponentMaker)(const char*, nlohmann::json);
+        typedef std::unordered_map<std::string, ComponentMaker> ComponentMap;
         static ComponentMap componentMap;
 
         void setName(const char* name);
@@ -31,7 +32,7 @@ class BlazorComponent {
 
         BlazorComponent();
         BlazorComponent(std::string name, nlohmann::json json, std::string elementName = "root");
-        BlazorComponent(std::string tagName, std::vector<BlazorParameter> params, nlohmann::json childrenJson = NULL);
+        BlazorComponent(std::string tagName, Stylebase::TypeInfo type, std::vector<BlazorParameter> params = std::vector<BlazorParameter>());
 
         void streamOutput(std::ostream* output, int indentCount = 1);
 
