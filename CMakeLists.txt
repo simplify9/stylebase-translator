@@ -13,6 +13,7 @@ add_executable(
 				src/blazor_types/blazor_parameter.cpp
 				src/blazor_types/blazor_document.cpp
 				src/blazor_types/blazor_project.cpp
+				src/stylebase_structs/base_structs.cpp
 )
 
 
