@@ -31,8 +31,16 @@ void BlazorDocument::writeToFile(){
         usingStatements += "\n@using " + STYLEBASE_LIB + '.' + lib;
 
     std::ofstream file;
+
     if(BlazorProject::specifiedDir){
+        bool isDirectory = std::filesystem::is_directory(BlazorProject::outputDir);
+        bool exists = std::filesystem::exists(BlazorProject::outputDir);
+        if(!exists || !isDirectory)
+            std::filesystem::create_directory(BlazorProject::outputDir);
+        file.open(BlazorProject::outputDir + '/' + name);
     }
+    else file.open(name);
+
     file << ns << usingStatements << std::endl;
     mainComponent.streamOutput<std::ofstream*>(&file);
     file.close();
