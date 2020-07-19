@@ -53,6 +53,7 @@ BlazorComponent::BlazorComponent(std::string tname, Stylebase::TypeInfo typeInfo
         }
         else {
             this->openingTag = '<' + tname + '>'; 
+
             this->closingTag = "<\\" + tname + '>';
         }
 }
