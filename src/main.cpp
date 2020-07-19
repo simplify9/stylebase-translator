@@ -2,6 +2,8 @@
 #include <blazor_types/blazor_document.hpp>
 #include <blazor_types/blazor_project.hpp>
 #include <fstream>
+#include <chrono>
+#include <thread>
 #include <iostream>
 #include <nlohmann/json.hpp>
 #include <string>
@@ -40,18 +42,21 @@ int main(int argc, char **argv) {
     //   BlazorProject::componentIds.insert({comp->calculateIdentity(), comp});
   }
 
-  // BlazorProject::documents.reserve(BlazorProject::components.size());
-  // for (BlazorComponent comp : BlazorProject::components) {
-  //   BlazorProject::documents.emplace_back(comp.getName().c_str(), comp);
-  // }
-
   for(BlazorComponent comp : BlazorProject::components){
       BlazorProject::documents.emplace_back(comp);
   }
 
+  std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
+
   for(BlazorDocument doc : BlazorProject::documents){
+      std::cout << "Writing " << doc.getName() << "...\n";
       doc.writeToFile();
   }
+  double timeElapsed = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(
+          std::chrono::high_resolution_clock::now() - start
+  ).count();
+
+  std::cout << "Done. Took " << timeElapsed << " seconds" << std::endl;
 
   return 0;
 }
