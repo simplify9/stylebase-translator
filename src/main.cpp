@@ -49,7 +49,9 @@ int main(int argc, char **argv) {
       BlazorProject::documents.emplace_back(comp);
   }
 
-  BlazorProject::documents[0].writeToFile();
+  for(BlazorDocument doc : BlazorProject::documents){
+      doc.writeToFile();
+  }
 
   return 0;
 }
