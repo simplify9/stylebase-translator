@@ -28,18 +28,6 @@ BlazorComponent::ComponentMap BlazorComponent::componentMap{
 
 BlazorComponent::BlazorComponent() : id(rand()) {}
 
-void BlazorComponent::streamOutput(std::ostream *output, int indentCount) {
-  for (int i = 0; i < indentCount; ++i)
-    std::cout << '\t';
-  *output << this->openingTag + '\n';
-  for (BlazorComponent child : this->children) {
-    child.streamOutput(output, indentCount + 1);
-  }
-  for (int i = 0; i < indentCount; ++i)
-    std::cout << '\t';
-  *output << this->closingTag + '\n';
-}
-
 std::vector<BlazorParameter> blazorParamsFromJson(nlohmann::json *_props) {
   nlohmann::json props = *_props;
   std::vector<BlazorParameter> params(props.size());
@@ -63,10 +51,16 @@ BlazorComponent::BlazorComponent(std::string tname, Stylebase::TypeInfo typeInfo
             this->closingTag = "<\\" + typeInfo.component + '>';
         }
         else {
+            this->usedLibraries.emplace_back(typeInfo.lib);
             this->openingTag = '<' + tname + '>'; 
             this->closingTag = "<\\" + tname + '>';
         }
-    }
+}
+
+std::vector<std::string> BlazorComponent::getLibraries(){
+    return this->usedLibraries;
+}
+
 
 BlazorComponent::BlazorComponent(std::string name, nlohmann::json component,
                                  std::string elementName)
