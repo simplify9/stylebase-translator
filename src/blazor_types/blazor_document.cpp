@@ -42,7 +42,14 @@ void BlazorDocument::writeToFile(){
     else file.open(name);
 
     file << ns << usingStatements << std::endl;
-    mainComponent.streamOutput<std::ofstream*>(&file);
+    mainComponent.streamOutput(&file);
+
+    std::string code = "\n@code {";
+    //TODO: Add Parameters from main component
+    code += "}\n";
+
+
+
     file.close();
 }
 
