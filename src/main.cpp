@@ -22,6 +22,11 @@ int main(int argc, char **argv) {
     return -1;
   }
 
+  if(argc > 2) {
+      BlazorProject::specifiedDir = true;
+      BlazorProject::outputDir = argv[2];
+  }
+
   std::cout << "Reading json template...\n" << std::flush;
 
   const char *sbJsonFilepath = argv[1];
@@ -41,8 +46,10 @@ int main(int argc, char **argv) {
   // }
 
   for(BlazorComponent comp : BlazorProject::components){
-      comp.streamOutput(&std::cout);
+      BlazorProject::documents.emplace_back(comp);
   }
+
+  BlazorProject::documents[0].writeToFile();
 
   return 0;
 }
