@@ -47,18 +47,24 @@ BlazorComponent::BlazorComponent(std::string tname, Stylebase::TypeInfo typeInfo
     : id(rand()), parameters(params), type(typeInfo.lib + ':' + typeInfo.component) {
         ComponentMaker maker = getCompMapFunc(typeInfo.lib+':'+typeInfo.component);
         if(maker != nullptr){
+            this->usedLibraries.emplace(typeInfo.lib);
             this->openingTag = '<' + typeInfo.component + '>'; 
             this->closingTag = "<\\" + typeInfo.component + '>';
         }
         else {
-            this->usedLibraries.emplace_back(typeInfo.lib);
             this->openingTag = '<' + tname + '>'; 
             this->closingTag = "<\\" + tname + '>';
         }
 }
 
-std::vector<std::string> BlazorComponent::getLibraries(){
-    return this->usedLibraries;
+std::unordered_set<std::string> BlazorComponent::getLibraries(){
+    std::unordered_set<std::string> libs = this->usedLibraries;
+    for(BlazorComponent child : this->children){
+        for(std::string lib : child.getLibraries()){
+            libs.emplace(lib);
+        }
+    }
+    return libs;
 }
 
 
