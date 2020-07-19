@@ -3,6 +3,7 @@ project(stylebaseTranslator)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 set(CMAKE_BUILD_TYPE DEBUG)
+set(CMAKE_CXX_STANDARD 17)
 
 add_subdirectory(deps/json)
 
