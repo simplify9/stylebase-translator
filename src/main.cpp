@@ -35,6 +35,7 @@ int main(int argc, char **argv) {
   json parsedBody = getJsonFromFile(sbJsonFilepath);
   json components = parsedBody["components"];
 
+  std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
   for (json::iterator it = components.begin(); it != components.end(); ++it) {
     BlazorProject::components.emplace_back(it.key(), it.value());
     // BlazorComponent* comp = &BlazorProject::components[BlazorProject::components.size()];
@@ -46,7 +47,6 @@ int main(int argc, char **argv) {
       BlazorProject::documents.emplace_back(comp);
   }
 
-  std::chrono::time_point<std::chrono::high_resolution_clock> start = std::chrono::high_resolution_clock::now();
 
   for(BlazorDocument doc : BlazorProject::documents){
       std::cout << "Writing " << doc.getName() << "...\n";
