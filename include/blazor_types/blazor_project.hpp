@@ -10,6 +10,8 @@ class BlazorProject {
         static std::unordered_map<int, BlazorComponent*> componentIds;
         static std::vector<BlazorDocument> documents;
         static std::vector<BlazorComponent> components;
+        static std::string outputDir;
+        static bool specifiedDir;
         BlazorProject();
     private:
 };
