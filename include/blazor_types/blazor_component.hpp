@@ -4,6 +4,7 @@
 #include "blazor_parameter.hpp"
 #include "stylebase_structs/base_structs.hpp"
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 class BlazorDocument;
@@ -17,7 +18,7 @@ class BlazorComponent {
         void setName(const char* name);
         inline std::string getName() {return this->name;};
 
-        std::vector<std::string> getLibraries();
+        std::unordered_set<std::string> getLibraries();
 
         inline long int calculateIdentity() {
             std::string tmp = name + type;
@@ -58,8 +59,9 @@ class BlazorComponent {
         std::string name;
         std::string openingTag;
         std::string type;
-        std::vector<std::string> usedLibraries;
+        std::unordered_set<std::string> usedLibraries;
         std::string closingTag;
+        BlazorComponent* parent;
         std::vector<BlazorComponent> children;
         std::vector<BlazorParameter> parameters;
 };
