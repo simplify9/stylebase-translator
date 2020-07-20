@@ -16,7 +16,9 @@ class BlazorComponent {
         static ComponentMap componentMap;
 
         void setName(const char* name);
-        inline std::string getName() {return this->name;};
+        inline std::string getName() {return this->name;}
+
+        inline std::vector<BlazorParameter> getParams() {return this->parameters;}
 
         std::unordered_set<std::string> getLibraries();
 
