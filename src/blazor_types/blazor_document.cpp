@@ -4,6 +4,7 @@
 #include <fstream>
 #include <filesystem>
 #include <blazor_types/blazor_project.hpp>
+#include <blazor_types/blazor_parameter.hpp>
 
 BlazorDocument::BlazorDocument() {}
 
@@ -44,10 +45,15 @@ void BlazorDocument::writeToFile(){
     file << ns << usingStatements << std::endl;
     mainComponent.streamOutput(&file);
 
-    std::string code = "\n@code {";
-    //TODO: Add Parameters from main component
-    code += "}\n";
+    std::string code = "\n@code {\n";
 
+    for(BlazorParameter param : mainComponent.getParams()){
+        code += "\t[Parameter]\n";
+        code += "\tpublic string " + param.getName() + " { get; set; }\n";
+    }
+
+    code += "}\n";
+    file << code;
 
 
     file.close();
