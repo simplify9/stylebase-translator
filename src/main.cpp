@@ -28,6 +28,11 @@ int main(int argc, char **argv) {
       BlazorProject::specifiedDir = true;
       BlazorProject::outputDir = argv[2];
   }
+  else {
+      //TODO: Redefine this behaviour to check if user wants to output to different folder
+      BlazorProject::specifiedDir = true;
+      BlazorProject::outputDir = "output";
+  }
 
   std::cout << "Reading json template...\n" << std::flush;
 
