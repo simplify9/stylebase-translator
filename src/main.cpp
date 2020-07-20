@@ -52,6 +52,7 @@ int main(int argc, char **argv) {
       std::cout << "Writing " << doc.getName() << "...\n";
       doc.writeToFile();
   }
+
   double timeElapsed = std::chrono::duration_cast<std::chrono::duration<double, std::ratio<1>>>(
           std::chrono::high_resolution_clock::now() - start
   ).count();
